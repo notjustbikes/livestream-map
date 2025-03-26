@@ -1,73 +1,12 @@
-# gps-logger by 715209
-# live-map by b3ck
+# Livestream Map for IRL Livestreams (NJB Live)
 
-Download and install this on your android phone:
-https://github.com/mendhak/gpslogger/releases
+This node.js code takes input from a [an open source Android app](https://github.com/mendhak/gpslogger) and generates a map that can be used as a browser source in OBS, for use in IRL livestreaming.
 
-Once it's started go into the settings and turn everything off for logging besides custom url which should look like this:
-`http://<YOUR-IP-or-DNS>:3000/log?s=%SPD&b=%BATT&lat=%LAT&lon=%LON&a=%ALT`
-  
-- 1.) On your PC clone or download this GIT
-- 2.) Run the 'npm install --production.bat'
-- 3.) In order for all of the APIs to work you'll need to edit the `config.js`, links are in the config for the APIs.
-  > After signing up for HERE.com enable REST, and it will generate an 'APP ID', click the `Create API key` button this is what you want to use in the 'config.js' file.
-  
-  > [Generate APP ID & API KEY EXAMPLE](https://i.imgur.com/GQGnoWU.png/)
-  
-  [![Generate APP ID & API KEY EXAMPLE](https://i.imgur.com/GQGnoWU.png/)](https://i.imgur.com/GQGnoWU.png/)
+I use this code, running on a Linux server, for my bicycle livestreams on [NJB Live](https://youtube.com/@njblive) to display a live map of where I am, along with street/city information, weather, and speed.
 
-- 4.) Also in the `config.js` is a section for a 'UNIQUE_CODE', if you want to protect access to the GPS-LOGGER either generate it or put in your own code, if not then leave it blank;
+This code is a heavily-modified version of this project:
+https://github.com/NOALBS/gps-logger
 
-  Get a Code here => https://www.randomcodegenerator.com/en/generate-codes or make up your own.
-  
-  Add `&key=<UNIQUE_CODE>` at the end of your GPS-LOGGER 'custom url' URL, this will secure your data and everything in turn needs this key to access data and send data.
-  
-  My Custom URL in GPS-Logger looks like this: ```http://<YOUR-IP-or-DNS>:<PORT>/log?s=%SPD&b=%BATT&lat=%LAT&lon=%LON&a=%ALT&key=<UNIQUE_CODE>```
-  
-  If you want to access the gps-logger from outside your local network you'll need to add `?key=<UNIQUE-CODE>` to the end of the URL, for example ```http://<YOUR-IP-or-DNS>:<PORT>/map?key=<UNIQUE-CODE>```
-  
-  This could be a neat tool to give to your most trusted MODs just in case something happens to you, they 'could' provide emergency services with your exact location.
+I have marked it as a fork in Github, but the code is barely recognisable, and many features have been refactored or removed from the original. Still it follows the same basic flow as gps-logger, and it would not have been possible for me to make this without them making it first.
 
-- 5.) [Open and Forward your ports](https://www.noip.com/support/knowledgebase/general-port-forwarding-guide/), otherwise all of this won't work.
-- 6.) Run 'npm start.bat' to start the gps-logger server
-  
-It should say something like this:
-
-```
-PS C:\github\gps-logger> npm start
-gps-logger@2.0.0 start C:\github\gps-logger
-node app
-listening on *:3000
-```
-
- > Now browse to http://localhost:3000
- > - or http://localhost:3000/stats/citystate
- > - or http://localhost:3000/stats/a
- > - or http://localhost:3000/stats/b
-
- > Other links to know:
- > - http://localhost:3000/map
- > - > is your regular map
-
- > - http://localhost:3000/thestuff
- > - > is a bunch of information set to auto refresh when new data comes in, good for OBS overlays.
-
- > - http://localhost:3000/map
- > - > is your regular map
-
- > - http://localhost:3000/map_rotate
- > - > is a basic attempt to make the map rotate depending on your current direction, you will need to add &d=%DIR to your Custom URL in the GPS-LOGGER app on your phone, before the UNIQUE-CODE. ```ex; http://<YOUR-IP-or-DNS>:<PORT>/log?s=%SPD&b=%BATT&lat=%LAT&lon=%LON&a=%ALT&d=%DIR&key=<UNIQUE_CODE>```
-
- > - http://localhost:3000/mod_map
- > - > this will show a map with all details and stats to help your most trusted MODs in an emergency situtation.
- > - > MODs can access this from: ```http://<YOUR-IP-or-DNS>:<PORT>/mod_map?key=<UNIQUE-CODE>```
-
-Now just pull whatever you want into your OBS Scene, and Bob's your uncle. :man:
-
-  > Please keep in mind I just left everything styled like I have it in my stream, to truly make it your own all it takes is a little tinkering with CSS.
-
-If you have any issues feel free to submit them here on GitHub, or message me on Discord @ b3ck#3517.
-- To see it in action check out my livestream or VODs @ https://twitch.tv/b3ck
-
-
-
+You can check out [the original project](https://github.com/NOALBS/gps-logger) for instructions on how to register for API keys and to get this project up and running.

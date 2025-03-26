@@ -2,18 +2,18 @@
 <html>
 
 <head>
-    <title>FakeStreamer_ Map - IRL</title>
+    <title>NJB Livestream Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
         html,
         body {
-            background-color: #181818;
+            background-color: #000;
             height: 100%;
             margin: 0;
             padding: 0;
-            color: #F4F4F4;
-            font-family: 'Inter', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            color: white;
+            font-family: 'Helvetica', Arial, sans-serif;
         }
 
         a {
@@ -48,22 +48,22 @@
         }
 
         #map:after {
-            width: 44px;
-            height: 80px;
+            width: 50px;
+            height: 50px;
             display: block;
             content: ' ';
             position: absolute;
-            top: 45%;
-            left: 48.8%;
-            margin: -40px 0 0 -11px;
-            background: url('https://fakestreamer.nl/wp-content/uploads/2024/01/current_location.png');
-            background-size: 44px 80px;
+            top: 50%;
+            left: 50%;
+            margin: -30px 0 0 -20px;
+            background: url('images/bike.png');
+            background-size: 50px 50px;
             pointer-events: none;
         }
-
     </style>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+
 
 </head>
 
@@ -74,6 +74,9 @@
     <script>
         const socket = io();
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const myKey = urlParams.get('key');
+        
         function initMap() {
             getMap();
         }
@@ -81,7 +84,7 @@
         const getMap = async () => {
             try {
 
-                let data = await fetch(`./style`);
+                let data = await fetch(`./style?key=${myKey}`);
                 let style = await data.json();
 
                 let customMapType = new google.maps.StyledMapType(style, {
@@ -90,16 +93,19 @@
                 let customMapTypeId = 'custom_style';
 
                 let map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 15,
+                    zoom: 17,
                     disableDefaultUI: true,
                     backgroundColor: '#000',
-                    center: { lat: 51.9244, lng: 4.4777 }, // Center of Minneapolis, MN you can change this to your major city's lon/lat.
+                    center: { lat: 52.3425181, lng: 4.8603621 }, // Amsterdam Centraal you can change this to your major city's lon/lat.
                     mapTypeControlOptions: {
                         mapTypeIds: [google.maps.MapTypeId.ROADMAP, customMapTypeId]
                     }
                 });
 
-                socket.on("THESTUFF", data => {
+                const bikeLayer = new google.maps.BicyclingLayer();
+                bikeLayer.setMap(map);
+
+                socket.on("locationUpdate", data => {
                     var latLng = new google.maps.LatLng(data.lat, data.lon);
                     map.panTo(latLng);
                 });
@@ -116,7 +122,7 @@
     <script>
 
         window.onload = function () {
-            let data = fetch(`./stats/gapi`).then(function (response) {
+            let data = fetch(`./stats/gapi?key=${myKey}`).then(function (response) {
                 return response.text().then(function (gapi) {
 
                     console.log("gapi =", gapi);

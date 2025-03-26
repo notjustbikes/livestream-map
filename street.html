@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" /> <title>Street Name</title>
+        <style>
+			@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
+
+		
+            body { 
+                background-color: rgba(0, 0, 0, 0) !important;
+                background: none !important;
+	
+                padding: 0 !important; 
+                margin: 0 !important;
+	
+                text-align: left !important;
+                font-family: Arial, 'Open Sans', sans-serif !important;
+                color: #fff !important;
+                font-size: 50px !important;
+                font-weight: 700 !important;
+	
+                display: inline-block !important;
+                -webkit-box-sizing: content-box !important;
+                -moz-box-sizing: content-box !important;
+                box-sizing: content-box !important;
+	
+                float: none !important;
+                z-index: auto !important;
+	
+                width: 100% !important;
+                height: 100% !important;
+	
+                position: static !important;
+	
+                cursor: default !important;
+	
+                opacity: 1 !important;
+
+                overflow: visible !important;
+	
+                border: none !important;
+                -webkit-border-radius: 0 !important;
+                border-radius: 0 !important;
+	
+                -webkit-box-shadow: none !important;
+                box-shadow: none !important;
+                text-shadow: 1px 1px 0 rgba(140,140,140,0.6) , -1px -1px 1px rgba(0,0,0,0.67) !important;
+	
+                -webkit-transition: none !important;
+                -moz-transition: none !important;
+                -o-transition: none !important;
+                transition: none !important;
+            }
+			
+			#data {
+				text-align: left;
+				padding: 5px;
+				-webkit-filter: drop-shadow( 0px 0px 9px rgba(0, 0, 0, .7));
+				filter: drop-shadow( 0px 0px 9px rgba(0, 0, 0, .7));
+				/* Similar syntax to box-shadow */
+			}
+
+            .name {
+                text-align: left;
+            }
+
+        </style>
+
+    </head>
+    <body>
+        <div id="data"></div>
+
+        <script src="/socket.io/socket.io.js"></script>
+	<script>
+	    const socket = io();
+	    const element = document.getElementById("data");
+
+	    socket.on("locationUpdate", data => {
+		const street = data.street || "";
+		const city = data.city || "";
+
+		let html = "";
+		if (street && city) {
+		    html = `<p class="name">${street}, ${city}</p>`;
+		} else if (street) {
+		    html = `<p class="name">${street}</p>`;
+		} else if (city) {
+		    html = `<p class="name">${city}</p>`;
+		}
+
+		element.innerHTML = html;
+	    });
+	</script>
+
+    </body>
+</html>
